@@ -8,7 +8,7 @@ const TopBar = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="h-[120px] flex flex-col justify-end px-6 sticky top-0 z-20 glass pb-4 gap-4">
+        <div className="h-[80px] md:h-[120px] flex flex-col justify-end px-4 md:px-6 sticky top-0 z-20 glass pb-3 md:pb-4 gap-3 md:gap-4">
             <div className="flex items-center justify-between">
                 {/* Navigation Arrows */}
                 <div className="flex items-center gap-2">
@@ -56,8 +56,8 @@ const TopBar = () => {
                 </div>
             </div>
             
-            {/* Feature Filter Pills */}
-            <div className="flex items-center gap-2 mt-1">
+            {/* Feature Filter Pills - hidden on mobile */}
+            <div className="hidden sm:flex items-center gap-2 mt-1">
                 <button 
                     onClick={() => { setActiveFilter('all'); navigate('/'); }}
                     className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors cursor-pointer ${activeFilter === 'all' ? 'bg-white text-black hover:bg-gray-200' : 'bg-[rgba(255,255,255,0.1)] text-white hover:bg-[rgba(255,255,255,0.2)] border border-[rgba(255,255,255,0.05)]'}`}

@@ -8,7 +8,7 @@ const PlayerContextProvider = ({ children }) => {
     const seekBg = useRef(null);
     const seekBar = useRef(null);
 
-    const url = 'http://localhost:5000';
+    const url = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
     const [songsData, setSongsData] = useState([]);
     const [albumsData, setAlbumsData] = useState([]);

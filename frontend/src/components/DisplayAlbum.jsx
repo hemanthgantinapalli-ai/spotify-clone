@@ -45,7 +45,7 @@ const DisplayAlbum = () => {
                     <h2 className='text-3xl md:text-5xl lg:text-7xl font-extrabold tracking-tight text-white mb-2'>{album.name}</h2>
                     <p className='text-spotifyGray text-sm md:text-base font-medium'>{album.desc}</p>
                     <div className='flex items-center gap-2 text-xs font-semibold text-white mt-2'>
-                        <span className='text-spotifyGreen font-bold'>Spotify Clone</span>
+                        <span className='text-spotifyGreen font-bold'>Sound Wave</span>
                         <span className='w-1 h-1 bg-white rounded-full'></span>
                         <span className='text-spotifyGray'>{albumSongs.length} songs</span>
                     </div>

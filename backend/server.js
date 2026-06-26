@@ -28,7 +28,7 @@ app.use('/api/album', albumRouter); // Matches frontend URL: http://localhost:50
 
 // Base Endpoint Verification Route
 app.get('/', (req, res) => {
-    res.send('Spotify Clone Backend API is running smoothly...');
+    res.send('Sound Wave Backend API is running smoothly...');
 });
 
 // Boot the Server Listening Instance

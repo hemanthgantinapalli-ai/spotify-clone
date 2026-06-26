@@ -4,7 +4,7 @@ import AdminNav from './AdminNav';
 import { PlayerContext } from '../context/PlayerContext';
 
 const AddAlbum = () => {
-    const url = 'http://localhost:5000';
+    const url = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
     const { refreshAlbums } = useContext(PlayerContext);
 
     const [imageFile, setImageFile] = useState(null);

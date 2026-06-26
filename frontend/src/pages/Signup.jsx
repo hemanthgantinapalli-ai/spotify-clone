@@ -2,6 +2,9 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { PlayerContext } from '../context/PlayerContext';
 import { useNavigate, Link } from 'react-router-dom';
+import { Music2, Eye, EyeOff, Mail, Lock, User, Loader2 } from 'lucide-react';
+
+const url = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
 const Signup = () => {
   const { setUser } = useContext(PlayerContext);
@@ -10,73 +13,143 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
     try {
-      const { data } = await axios.post('http://localhost:5000/api/auth/register', {
+      await axios.post(`${url}/api/auth/register`, {
         username,
         email,
         password,
       });
-      // successful registration – navigate to login
       navigate('/login');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed');
+      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-spotifyDarkGray via-spotifyLightBlack to-spotifyDarkGray">
-      <form onSubmit={handleSubmit} className="bg-spotifyLightBlack bg-opacity-80 backdrop-blur-lg p-8 rounded-xl shadow-xl w-full max-w-md">
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">Create Spotify Account</h2>
-        {error && (
-          <p className="text-red-400 text-center mb-4" role="alert">{error}</p>
-        )}
-        <div className="mb-4">
-          <label className="block text-spotifyGray mb-1" htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            className="w-full px-4 py-2 bg-spotifyDarkGray rounded focus:outline-none focus:ring-2 focus:ring-spotifyGreen transition"
-          />
+    <div className="login-page flex items-center justify-center min-h-screen w-full relative overflow-hidden px-4">
+      {/* Animated background orbs */}
+      <div className="auth-orb auth-orb-1" />
+      <div className="auth-orb auth-orb-2" />
+      <div className="auth-orb auth-orb-3" />
+
+      {/* Card */}
+      <div className="auth-card w-full max-w-sm sm:max-w-md relative z-10">
+        {/* Logo */}
+        <div className="flex flex-col items-center mb-8">
+          <div className="auth-logo-ring mb-4">
+            <Music2 className="w-8 h-8 text-spotifyGreen" />
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Sound Wave</h1>
+          <p className="text-sm text-zinc-400 mt-1">Create your free account</p>
         </div>
-        <div className="mb-4">
-          <label className="block text-spotifyGray mb-1" htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full px-4 py-2 bg-spotifyDarkGray rounded focus:outline-none focus:ring-2 focus:ring-spotifyGreen transition"
-          />
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
+          {error && (
+            <div className="auth-error-banner" role="alert">
+              <span className="text-sm">{error}</span>
+            </div>
+          )}
+
+          {/* Username Field */}
+          <div className="auth-field-group">
+            <label className="auth-label" htmlFor="signup-username">Username</label>
+            <div className="auth-input-wrapper">
+              <User className="auth-input-icon" />
+              <input
+                type="text"
+                id="signup-username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                placeholder="Your display name"
+                className="auth-input"
+                autoComplete="username"
+              />
+            </div>
+          </div>
+
+          {/* Email Field */}
+          <div className="auth-field-group">
+            <label className="auth-label" htmlFor="signup-email">Email address</label>
+            <div className="auth-input-wrapper">
+              <Mail className="auth-input-icon" />
+              <input
+                type="email"
+                id="signup-email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="you@example.com"
+                className="auth-input"
+                autoComplete="email"
+              />
+            </div>
+          </div>
+
+          {/* Password Field */}
+          <div className="auth-field-group">
+            <label className="auth-label" htmlFor="signup-password">Password</label>
+            <div className="auth-input-wrapper">
+              <Lock className="auth-input-icon" />
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="signup-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="Create a strong password"
+                className="auth-input auth-input-padded-right"
+                autoComplete="new-password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(v => !v)}
+                className="auth-eye-btn"
+                tabIndex={-1}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+          </div>
+
+          {/* Submit */}
+          <button
+            type="submit"
+            id="signup-submit-btn"
+            disabled={loading}
+            className="auth-submit-btn"
+          >
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Creating account…
+              </span>
+            ) : (
+              'Create Account'
+            )}
+          </button>
+        </form>
+
+        {/* Footer */}
+        <div className="mt-6 text-center">
+          <p className="text-sm text-zinc-400">
+            Already have an account?{' '}
+            <Link to="/login" className="text-spotifyGreen font-semibold hover:underline transition-colors">
+              Log In
+            </Link>
+          </p>
         </div>
-        <div className="mb-6">
-          <label className="block text-spotifyGray mb-1" htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full px-4 py-2 bg-spotifyDarkGray rounded focus:outline-none focus:ring-2 focus:ring-spotifyGreen transition"
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-spotifyGreen text-black font-bold py-2 rounded hover:scale-105 transition"
-        >
-          Sign Up
-        </button>
-        <p className="mt-4 text-center text-spotifyGray">
-          Already have an account?{' '}
-          <Link to="/login" className="text-spotifyGreen font-semibold hover:underline">Log In</Link>
-        </p>
-      </form>
+      </div>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import AdminNav from './AdminNav';
 import { PlayerContext } from '../context/PlayerContext';
 
 const AddSong = () => {
-    const url = 'http://localhost:5000';
+    const url = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
     const { refreshSongs } = useContext(PlayerContext);
 
     const [songFile, setSongFile] = useState(null);

@@ -50,7 +50,7 @@ const Display = () => {
     const likedSongsList = songsData.filter(song => likedSongs.includes(song._id));
 
     return (
-        <div ref={displayRef} className='w-full px-6 pt-5 pb-24 text-white min-h-[calc(100vh-140px)] animate-fade-in'>
+        <div ref={displayRef} className='w-full px-3 sm:px-6 pt-4 sm:pt-5 pb-20 sm:pb-24 text-white min-h-[calc(100vh-140px)] animate-fade-in'>
             <Routes>
                 {/* Main Home Grid */}
                 <Route path='/' element={
@@ -58,7 +58,7 @@ const Display = () => {
                         {/* Render all categories or specific filter */}
                         {activeFilter === 'all' && (
                             <>
-                                <h2 className='mb-6 font-bold text-3xl hover:underline cursor-pointer drop-shadow-lg tracking-tight'>Featured Charts</h2>
+                                <h2 className='mb-6 font-bold text-xl sm:text-3xl hover:underline cursor-pointer drop-shadow-lg tracking-tight'>Featured Charts</h2>
                                 <div className='flex overflow-auto gap-6 scrollbar-hide pb-6 -mx-6 px-6'>
                                     {albumsData && albumsData.length > 0 ? (
                                         albumsData.map((item, index) => (
@@ -71,7 +71,7 @@ const Display = () => {
                                     )}
                                 </div>
 
-                                <h2 className='my-8 font-bold text-3xl hover:underline cursor-pointer drop-shadow-lg tracking-tight'>Today's Biggest Hits</h2>
+                                <h2 className='my-6 sm:my-8 font-bold text-xl sm:text-3xl hover:underline cursor-pointer drop-shadow-lg tracking-tight'>Today's Biggest Hits</h2>
                                 <div className='flex overflow-auto gap-6 scrollbar-hide pb-6 -mx-6 px-6'>
                                     {songsData && songsData.length > 0 ? (
                                         songsData.map((item, index) => (

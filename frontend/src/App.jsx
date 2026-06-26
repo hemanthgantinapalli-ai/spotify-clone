@@ -29,7 +29,7 @@ const App = () => {
   return (
     <div className="h-screen w-screen bg-spotifyBase text-white font-sans overflow-hidden flex flex-col">
       {/* Upper Section (Sidebar + Main Content) */}
-      <div className="flex flex-1 overflow-hidden p-2 gap-2 pb-0">
+      <div className="flex flex-1 overflow-hidden p-1.5 md:p-2 gap-1.5 md:gap-2 pb-0">
         {/* Sidebar (hidden on mobile, flex on desktop) */}
         {!isAdminPage && <Sidebar />}
         
@@ -63,7 +63,7 @@ const App = () => {
       </div>
       
       {/* Bottom Player Bar */}
-      <div className="h-[90px] w-full bg-spotifyBase z-30">
+      <div className="h-[72px] md:h-[90px] w-full bg-spotifyBase z-30">
         <Player />
       </div>
 
