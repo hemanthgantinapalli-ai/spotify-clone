@@ -15,11 +15,11 @@ const Player = () => {
         <div className='glass-panel text-spotifyLightGray flex items-center justify-between px-4 z-50 select-none h-full w-full rounded-tl-xl rounded-tr-xl border-t border-[rgba(255,255,255,0.05)] shadow-[0_-10px_30px_rgba(0,0,0,0.3)]'>
 
             {/* Left Area - Dynamic Song Metadata */}
-            <div className='flex items-center gap-3 flex-1 md:flex-initial md:w-[30%] min-w-0'>
+            <div className='flex items-center gap-3 flex-1 min-w-0'>
                 {track ? (
                     <>
                         <img className='w-10 h-10 md:w-14 md:h-14 object-cover rounded shadow-lg animate-pulse-slow shrink-0' src={track.image} alt={track.name} />
-                        <div className="flex flex-col justify-center min-w-0">
+                        <div className="hidden sm:flex flex-col justify-center min-w-0">
                             <div className="flex items-center gap-1.5">
                                 <p className='text-xs md:text-[15px] font-bold text-white hover:underline cursor-pointer truncate drop-shadow-md'>{track.name}</p>
                                 {playStatus && (
@@ -36,37 +36,40 @@ const Player = () => {
                         {/* Interactive Like/Heart Button */}
                         <Heart 
                             onClick={() => toggleLikeSong(track._id)}
-                            className={`w-4 h-4 md:w-5 md:h-5 ml-2 cursor-pointer hover:scale-115 transition-all drop-shadow-md shrink-0 ${isLiked ? 'text-spotifyGreen fill-spotifyGreen' : 'hover:text-white'}`} 
+                            className={`hidden sm:block w-4 h-4 md:w-5 md:h-5 ml-2 cursor-pointer hover:scale-115 transition-all drop-shadow-md shrink-0 ${isLiked ? 'text-spotifyGreen fill-spotifyGreen' : 'hover:text-white'}`} 
                         />
                     </>
                 ) : (
-                    <div className='text-xs text-[rgba(255,255,255,0.5)] italic pl-2'>No track selected</div>
+                    <div className='text-xs text-[rgba(255,255,255,0.5)] italic pl-2 truncate'>No track selected</div>
                 )}
             </div>
 
             {/* Center Area - Playback Engine Controls */}
-            <div className='flex flex-col items-center justify-center gap-1.5 flex-initial md:w-[40%] max-w-[722px] shrink-0'>
-                <div className='flex gap-3.5 md:gap-5 items-center'>
+            <div className='flex flex-col items-center justify-center gap-1.5 w-[60%] sm:w-[50%] md:w-[40%] max-w-[722px] shrink-0'>
+                <div className='flex gap-3.5 md:gap-5 items-center justify-center w-full'>
                     <Shuffle
                         onClick={toggleShuffle}
-                        className={`hidden sm:block w-4 h-4 md:w-5 md:h-5 cursor-pointer transition-all hover:scale-110 ${isShuffle ? 'text-spotifyGreen drop-shadow-[0_0_8px_rgba(30,215,96,0.6)]' : 'text-spotifyLightGray hover:text-white'}`}
+                        className={`w-4 h-4 md:w-5 md:h-5 cursor-pointer transition-all hover:scale-110 ${isShuffle ? 'text-spotifyGreen drop-shadow-[0_0_8px_rgba(30,215,96,0.6)]' : 'text-spotifyLightGray hover:text-white'}`}
                     />
 
                     <SkipBack onClick={skipPrevious} className='w-4.5 h-4.5 md:w-6 md:h-6 cursor-pointer text-spotifyLightGray hover:text-white transition-all hover:scale-110 fill-current drop-shadow-md' />
 
                     {playStatus ? (
-                        <div onClick={pause} className='w-8 h-8 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform shadow-[0_0_15px_rgba(255,255,255,0.3)] text-black'>
+                        <div onClick={pause} className='w-8 h-8 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform shadow-[0_0_15px_rgba(255,255,255,0.3)] text-black shrink-0'>
                             <Pause className='w-4 h-4 md:w-5 md:h-5 text-black fill-black' />
                         </div>
                     ) : (
-                        <div onClick={play} className='w-8 h-8 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform shadow-[0_0_15px_rgba(255,255,255,0.3)] text-black'>
+                        <div onClick={play} className='w-8 h-8 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform shadow-[0_0_15px_rgba(255,255,255,0.3)] text-black shrink-0'>
                             <Play className='w-4 h-4 md:w-5 md:h-5 text-black fill-black ml-0.5' />
                         </div>
                     )}
 
                     <SkipForward onClick={skipForward} className='w-4.5 h-4.5 md:w-6 md:h-6 cursor-pointer text-spotifyLightGray hover:text-white transition-all hover:scale-110 fill-current drop-shadow-md' />
                     
-                    <Repeat className={`hidden sm:block w-4 h-4 md:w-5 md:h-5 cursor-pointer text-spotifyLightGray hover:text-white transition-all hover:scale-110`} />
+                    <Repeat 
+                        onClick={() => {}} // Can add toggle repeat if implemented, or keep static
+                        className={`w-4 h-4 md:w-5 md:h-5 cursor-pointer text-spotifyLightGray hover:text-white transition-all hover:scale-110`} 
+                    />
                 </div>
 
                 {/* Dynamic Connected Progress Slider (Hidden on extra small devices) */}
@@ -81,27 +84,29 @@ const Player = () => {
                 </div>
             </div>
 
-            {/* Right Area - Responsive Sound Level (Hidden on mobile) */}
-            <div className='hidden md:flex items-center gap-4 w-[30%] justify-end text-spotifyLightGray pr-4'>
-                <Mic2 className="w-[18px] h-[18px] cursor-pointer hover:text-white hover:scale-110 transition-all drop-shadow-sm" />
-                <ListMusic className="w-[18px] h-[18px] cursor-pointer hover:text-white hover:scale-110 transition-all drop-shadow-sm" />
-                <MonitorSpeaker className="w-[18px] h-[18px] cursor-pointer hover:text-white hover:scale-110 transition-all drop-shadow-sm" />
-                <div className="flex items-center gap-2 ml-1">
-                    <Volume2 className='w-5 h-5 cursor-pointer hover:text-white transition-colors drop-shadow-sm' />
-                    {/* Interactive Volume Range Slider */}
-                    <div className="w-[100px] flex items-center">
-                        <input
-                            type="range"
-                            min="0"
-                            max="1"
-                            step="0.01"
-                            value={volume}
-                            onChange={changeVolume}
-                            className='w-full h-[5px] bg-[rgba(255,255,255,0.1)] rounded-lg appearance-none cursor-pointer volume-slider group'
-                        />
+            {/* Right Area - Responsive Sound Level / Spacing */}
+            <div className='flex items-center justify-end flex-1 text-spotifyLightGray pr-2 md:pr-4'>
+                <div className='hidden md:flex items-center gap-4 w-full justify-end'>
+                    <Mic2 className="w-[18px] h-[18px] cursor-pointer hover:text-white hover:scale-110 transition-all drop-shadow-sm" />
+                    <ListMusic className="w-[18px] h-[18px] cursor-pointer hover:text-white hover:scale-110 transition-all drop-shadow-sm" />
+                    <MonitorSpeaker className="w-[18px] h-[18px] cursor-pointer hover:text-white hover:scale-110 transition-all drop-shadow-sm" />
+                    <div className="flex items-center gap-2 ml-1">
+                        <Volume2 className='w-5 h-5 cursor-pointer hover:text-white transition-colors drop-shadow-sm' />
+                        {/* Interactive Volume Range Slider */}
+                        <div className="w-[100px] flex items-center">
+                            <input
+                                type="range"
+                                min="0"
+                                max="1"
+                                step="0.01"
+                                value={volume}
+                                onChange={changeVolume}
+                                className='w-full h-[5px] bg-[rgba(255,255,255,0.1)] rounded-lg appearance-none cursor-pointer volume-slider group'
+                            />
+                        </div>
                     </div>
+                    <Maximize2 className='w-[18px] h-[18px] cursor-pointer hover:text-white hover:scale-110 transition-all ml-1 drop-shadow-sm' />
                 </div>
-                <Maximize2 className='w-[18px] h-[18px] cursor-pointer hover:text-white hover:scale-110 transition-all ml-1 drop-shadow-sm' />
             </div>
         </div>
     );
