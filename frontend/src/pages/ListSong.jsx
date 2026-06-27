@@ -65,7 +65,7 @@ const ListSong = () => {
                     {/* List Entries */}
                     {songs.length > 0 ? (
                         songs.map((item) => (
-                            <div key={item._id} className='grid grid-cols-2 sm:grid-cols-[0.5fr_1fr_2fr_2fr_0.5fr] items-center gap-2 p-3 bg-black/40 border border-zinc-800/60 rounded hover:bg-zinc-800/40 transition-colors text-sm'>
+                            <div key={item._id} className='grid grid-cols-[auto_1fr_auto] sm:grid-cols-[0.5fr_1fr_2fr_2fr_0.5fr] items-center gap-3 sm:gap-2 p-3 bg-black/40 border border-zinc-800/60 rounded hover:bg-zinc-800/40 transition-colors text-sm'>
                                 <img className='w-12 h-12 object-cover rounded' src={item.image} alt="" />
                                 <p className='font-semibold truncate pr-2'>{item.name}</p>
                                 <p className='text-spotifyGray truncate pr-2 hidden sm:block'>{item.desc}</p>

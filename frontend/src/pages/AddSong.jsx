@@ -96,8 +96,8 @@ const AddSong = () => {
                 <form onSubmit={onSubmitHandler} className='flex flex-col gap-4 text-sm'>
                     <h2 className='text-xl font-bold text-spotifyGreen mb-2'>Upload New Track</h2>
 
-                    <div className='flex gap-4'>
-                        <div className='flex flex-col gap-1 w-1/2'>
+                    <div className='flex flex-col sm:flex-row gap-4'>
+                        <div className='flex flex-col gap-1 w-full sm:w-1/2'>
                             <p className='font-semibold mb-1'>Upload Song File (.mp3)</p>
                             <label className={`p-3 rounded cursor-pointer text-center truncate block hover:bg-zinc-700 border border-dashed transition-colors ${songFile ? 'bg-green-900/30 border-green-500 text-green-300' : 'bg-spotifyDarkGray border-gray-500'}`}>
                                 {songFile ? `🎵 ${songFile.name}` : "Click to Select Audio (.mp3)"}
@@ -105,7 +105,7 @@ const AddSong = () => {
                             </label>
                         </div>
 
-                        <div className='flex flex-col gap-1 w-1/2'>
+                        <div className='flex flex-col gap-1 w-full sm:w-1/2'>
                             <p className='font-semibold mb-1'>Upload Album Art</p>
                             <label className={`p-3 rounded cursor-pointer text-center truncate block hover:bg-zinc-700 border border-dashed transition-colors ${imageFile ? 'bg-green-900/30 border-green-500 text-green-300' : 'bg-spotifyDarkGray border-gray-500'}`}>
                                 {imageFile ? `🖼️ ${imageFile.name}` : "Click to Select Image"}

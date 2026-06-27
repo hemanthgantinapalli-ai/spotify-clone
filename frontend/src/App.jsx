@@ -27,7 +27,7 @@ const App = () => {
     location.pathname === '/list-album';
 
   return (
-    <div className="h-screen w-screen bg-spotifyBase text-white font-sans overflow-hidden flex flex-col">
+    <div className="h-dvh w-full max-w-full bg-spotifyBase text-white font-sans overflow-hidden flex flex-col">
       {/* Upper Section (Sidebar + Main Content) */}
       <div className="flex flex-1 overflow-hidden p-1.5 md:p-2 gap-1.5 md:gap-2 pb-0">
         {/* Sidebar (hidden on mobile, flex on desktop) */}
@@ -38,17 +38,6 @@ const App = () => {
           <TopBar />
           
           <div className="flex-1 overflow-y-auto relative">
-            <div className="absolute top-4 right-6 z-50 flex gap-3">
-              {isAdminPage ? (
-                <Link to="/" className="bg-white text-black font-bold px-4 py-1.5 rounded-full text-xs hover:scale-105 transition-all shadow-md">
-                  Back to Music Player 🎵
-                </Link>
-              ) : (
-                <Link to="/add-song" className="bg-white text-black font-bold px-4 py-1.5 rounded-full text-xs hover:scale-105 transition-all shadow-md">
-                  Admin Console
-                </Link>
-              )}
-            </div>
             <Routes>
               <Route path="*" element={<Display />} />
               <Route path="/login" element={<Login />} />

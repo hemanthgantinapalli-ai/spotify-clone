@@ -14,8 +14,8 @@ const Player = () => {
     return (
         <div className='glass-panel text-spotifyLightGray flex items-center justify-between px-4 z-50 select-none h-full w-full rounded-tl-xl rounded-tr-xl border-t border-[rgba(255,255,255,0.05)] shadow-[0_-10px_30px_rgba(0,0,0,0.3)]'>
 
-            {/* Left Area - Dynamic Song Metadata (Scales down on mobile) */}
-            <div className='flex items-center gap-3 w-[50%] md:w-[30%] min-w-0'>
+            {/* Left Area - Dynamic Song Metadata */}
+            <div className='flex items-center gap-3 flex-1 md:flex-initial md:w-[30%] min-w-0'>
                 {track ? (
                     <>
                         <img className='w-10 h-10 md:w-14 md:h-14 object-cover rounded shadow-lg animate-pulse-slow shrink-0' src={track.image} alt={track.name} />
@@ -45,11 +45,11 @@ const Player = () => {
             </div>
 
             {/* Center Area - Playback Engine Controls */}
-            <div className='flex flex-col items-center justify-center gap-1.5 w-[50%] md:w-[40%] max-w-[722px]'>
-                <div className='flex gap-4 md:gap-5 items-center'>
+            <div className='flex flex-col items-center justify-center gap-1.5 flex-initial md:w-[40%] max-w-[722px] shrink-0'>
+                <div className='flex gap-3.5 md:gap-5 items-center'>
                     <Shuffle
                         onClick={toggleShuffle}
-                        className={`w-4 h-4 md:w-5 md:h-5 cursor-pointer transition-all hover:scale-110 ${isShuffle ? 'text-spotifyGreen drop-shadow-[0_0_8px_rgba(30,215,96,0.6)]' : 'text-spotifyLightGray hover:text-white'}`}
+                        className={`hidden sm:block w-4 h-4 md:w-5 md:h-5 cursor-pointer transition-all hover:scale-110 ${isShuffle ? 'text-spotifyGreen drop-shadow-[0_0_8px_rgba(30,215,96,0.6)]' : 'text-spotifyLightGray hover:text-white'}`}
                     />
 
                     <SkipBack onClick={skipPrevious} className='w-4.5 h-4.5 md:w-6 md:h-6 cursor-pointer text-spotifyLightGray hover:text-white transition-all hover:scale-110 fill-current drop-shadow-md' />
@@ -66,7 +66,7 @@ const Player = () => {
 
                     <SkipForward onClick={skipForward} className='w-4.5 h-4.5 md:w-6 md:h-6 cursor-pointer text-spotifyLightGray hover:text-white transition-all hover:scale-110 fill-current drop-shadow-md' />
                     
-                    <Repeat className='w-4 h-4 md:w-5 md:h-5 cursor-pointer text-spotifyLightGray hover:text-white transition-all hover:scale-110' />
+                    <Repeat className={`hidden sm:block w-4 h-4 md:w-5 md:h-5 cursor-pointer text-spotifyLightGray hover:text-white transition-all hover:scale-110`} />
                 </div>
 
                 {/* Dynamic Connected Progress Slider (Hidden on extra small devices) */}

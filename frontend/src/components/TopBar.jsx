@@ -1,14 +1,20 @@
 import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Bell, ArrowDownCircle } from 'lucide-react';
 import { PlayerContext } from '../context/PlayerContext';
 
 const TopBar = () => {
     const { isAuthenticated, user, logout, activeFilter, setActiveFilter } = useContext(PlayerContext);
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const isAdminPage = location.pathname === '/add-song' ||
+        location.pathname === '/add-album' ||
+        location.pathname === '/list-song' ||
+        location.pathname === '/list-album';
 
     return (
-        <div className="h-[80px] md:h-[120px] flex flex-col justify-end px-4 md:px-6 sticky top-0 z-20 glass pb-3 md:pb-4 gap-3 md:gap-4">
+        <div className="h-[64px] sm:h-[80px] md:h-[120px] flex flex-col justify-end px-4 md:px-6 sticky top-0 z-20 glass pb-2 sm:pb-3 md:pb-4 gap-2 sm:gap-3 md:gap-4">
             <div className="flex items-center justify-between">
                 {/* Navigation Arrows */}
                 <div className="flex items-center gap-2">
@@ -27,13 +33,19 @@ const TopBar = () => {
                 </div>
 
                 {/* Right Actions */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3 sm:gap-4">
+                    {!isAdminPage && (
+                        <Link to="/add-song" className="bg-white/10 hover:bg-white/20 border border-white/10 text-white font-bold px-3.5 py-1.5 rounded-full text-xs hover:scale-105 transition-all shadow-md shrink-0">
+                            Admin Console
+                        </Link>
+                    )}
+
                     {!isAuthenticated ? (
                         <>
-                            <Link to="/signup" className="text-spotifyLightGray font-bold text-[15px] hover:text-white transition-colors hover:scale-105">
+                            <Link to="/signup" className="text-spotifyLightGray font-bold text-xs sm:text-[15px] hover:text-white transition-colors hover:scale-105 shrink-0">
                                 Sign up
                             </Link>
-                            <Link to="/login" className="bg-spotifyGreen text-black font-bold px-8 py-[14px] rounded-full text-[15px] hover:scale-105 hover:bg-[#3be477] transition-all shadow-[0_0_15px_rgba(30,215,96,0.4)]">
+                            <Link to="/login" className="bg-spotifyGreen text-black font-bold px-4 sm:px-8 py-2 sm:py-[14px] rounded-full text-xs sm:text-[15px] hover:scale-105 hover:bg-[#3be477] transition-all shadow-[0_0_15px_rgba(30,215,96,0.4)] shrink-0">
                                 Log in
                             </Link>
                         </>

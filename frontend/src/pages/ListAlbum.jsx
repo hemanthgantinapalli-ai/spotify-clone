@@ -63,7 +63,7 @@ const ListAlbum = () => {
 
                         {albums.length > 0 ? (
                             albums.map((item) => (
-                                <div key={item._id} className='grid grid-cols-2 sm:grid-cols-[0.5fr_1fr_2fr_1fr_0.5fr] items-center gap-2 p-3 bg-black/40 border border-zinc-800/60 rounded hover:bg-zinc-800/40 transition-colors text-sm'>
+                                <div key={item._id} className='grid grid-cols-[auto_1fr_auto] sm:grid-cols-[0.5fr_1fr_2fr_1fr_0.5fr] items-center gap-3 sm:gap-2 p-3 bg-black/40 border border-zinc-800/60 rounded hover:bg-zinc-800/40 transition-colors text-sm'>
                                     <img className='w-12 h-12 object-cover rounded' src={item.image} alt="" />
                                     <p className='font-semibold truncate pr-2'>{item.name}</p>
                                     <p className='text-spotifyGray truncate pr-2 hidden sm:block'>{item.desc}</p>
@@ -71,11 +71,11 @@ const ListAlbum = () => {
                                         <div className='w-4 h-4 rounded-full border border-white/20 shadow-sm' style={{ backgroundColor: item.bgColor }}></div>
                                         <span className='text-xs font-mono text-spotifyGray'>{item.bgColor}</span>
                                     </div>
-                                <div className='flex justify-end sm:justify-center'>
-                                    <Trash2 onClick={() => removeAlbum(item._id)} className='w-5 h-5 text-red-500 cursor-pointer hover:text-red-400 transition-colors' />
+                                    <div className='flex justify-end sm:justify-center'>
+                                        <Trash2 onClick={() => removeAlbum(item._id)} className='w-5 h-5 text-red-500 cursor-pointer hover:text-red-400 transition-colors' />
+                                    </div>
                                 </div>
-                            </div>
-                        ))
+                            ))
                     ) : (
                         <p className='text-xs text-spotifyGray italic p-4 text-center'>No albums configured in the repository.</p>
                     )}
