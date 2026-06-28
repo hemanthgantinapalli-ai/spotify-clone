@@ -28,6 +28,27 @@ app.use((req, res, next) => {
 
 app.use(cors()); // Permitting cross-port communications with React frontend
 
+// Properly handle Private Network Access (PNA) preflight requests.
+// When the browser sends a preflight with `Access-Control-Request-Private-Network: true`
+// the server must respond to the OPTIONS request with
+// `Access-Control-Allow-Private-Network: true` to allow the request.
+app.options('*', (req, res) => {
+    // Echo required CORS headers for the preflight response
+    const requestOrigin = req.headers.origin || '*';
+    res.setHeader('Access-Control-Allow-Origin', requestOrigin);
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+    const requestHeaders = req.headers['access-control-request-headers'] || 'Content-Type,Authorization';
+    res.setHeader('Access-Control-Allow-Headers', requestHeaders);
+
+    // If the preflight indicates a private network request, allow it explicitly
+    if (req.headers['access-control-request-private-network'] === 'true') {
+        res.setHeader('Access-Control-Allow-Private-Network', 'true');
+    }
+
+    // No content for OPTIONS preflight
+    return res.sendStatus(204);
+});
+
 // Core API Route Mount Engines
 app.use('/api/auth', authRouter); // auth routes
 app.use('/api/song', songRouter);   // Matches frontend URL: http://localhost:5000/api/song/list
