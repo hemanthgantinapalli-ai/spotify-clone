@@ -19,6 +19,13 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware Stack Configuration
 app.use(express.json());
+
+// Allow Chrome Private Network Access (PNA) preflight checks
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Private-Network', 'true');
+    next();
+});
+
 app.use(cors()); // Permitting cross-port communications with React frontend
 
 // Core API Route Mount Engines
