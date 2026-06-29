@@ -20,46 +20,44 @@ const PORT = process.env.PORT || 5000;
 // Middleware Stack Configuration
 app.use(express.json());
 
+// CORS Configuration — allow your Vercel frontend
+app.use(cors({
+  origin: [
+    'https://spotify-clone-gray-iota.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:3000'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
 // Allow Chrome Private Network Access (PNA) preflight checks
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Private-Network', 'true');
-    next();
-});
+  res.setHeader('Access-Control-Allow-Private-Network', 'true');
 
-app.use(cors()); // Permitting cross-port communications with React frontend
-
-// Properly handle Private Network Access (PNA) preflight requests.
-// When the browser sends a preflight with `Access-Control-Request-Private-Network: true`
-// the server must respond to the OPTIONS request with
-// `Access-Control-Allow-Private-Network: true` to allow the request.
-app.options('*', (req, res) => {
-    // Echo required CORS headers for the preflight response
-    const requestOrigin = req.headers.origin || '*';
-    res.setHeader('Access-Control-Allow-Origin', requestOrigin);
-    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-    const requestHeaders = req.headers['access-control-request-headers'] || 'Content-Type,Authorization';
-    res.setHeader('Access-Control-Allow-Headers', requestHeaders);
-
-    // If the preflight indicates a private network request, allow it explicitly
+  // Handle OPTIONS preflight here directly
+  if (req.method === 'OPTIONS') {
     if (req.headers['access-control-request-private-network'] === 'true') {
-        res.setHeader('Access-Control-Allow-Private-Network', 'true');
+      res.setHeader('Access-Control-Allow-Private-Network', 'true');
     }
-
-    // No content for OPTIONS preflight
     return res.sendStatus(204);
+  }
+
+  next();
 });
 
 // Core API Route Mount Engines
-app.use('/api/auth', authRouter); // auth routes
-app.use('/api/song', songRouter);   // Matches frontend URL: http://localhost:5000/api/song/list
-app.use('/api/album', albumRouter); // Matches frontend URL: http://localhost:5000/api/album/list
+app.use('/api/auth', authRouter);
+app.use('/api/song', songRouter);
+app.use('/api/album', albumRouter);
 
 // Base Endpoint Verification Route
 app.get('/', (req, res) => {
-    res.send('Sound Wave Backend API is running smoothly...');
+  res.send('Sound Wave Backend API is running smoothly...');
 });
 
 // Boot the Server Listening Instance
 app.listen(PORT, () => {
-    console.log(`Server is blasting music on port ${PORT}`);
+  console.log(`Server is blasting music on port ${PORT}`);
 });
