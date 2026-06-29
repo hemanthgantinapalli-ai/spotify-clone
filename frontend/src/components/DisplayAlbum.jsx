@@ -19,8 +19,13 @@ const DisplayAlbum = () => {
         );
     }
 
-    // Filter songs belonging to this album
-    const albumSongs = songsData.filter((item) => item.album === album.name);
+    // Filter songs belonging to this album (multiple album support)
+    const albumSongs = songsData.filter((item) => {
+        if (Array.isArray(item.albums)) {
+            return item.albums.includes(album.name);
+        }
+        return item.album === album.name;
+    });
 
     const handlePlayAlbum = () => {
         if (albumSongs.length > 0) {
@@ -98,7 +103,9 @@ const DisplayAlbum = () => {
                                         <p className='text-xs text-spotifyGray truncate mt-0.5'>{item.desc}</p>
                                     </div>
                                 </div>
-                                <span className={`text-sm text-spotifyGray truncate hidden md:block ${isCurrentTrack ? 'text-spotifyGreen/80' : ''}`}>{item.album}</span>
+<span className={`text-sm text-spotifyGray truncate hidden md:block ${isCurrentTrack ? 'text-spotifyGreen/80' : ''}`}>
+                                            {Array.isArray(item.albums) ? item.albums.join(', ') : item.album}
+                                        </span>
                                 
                                 {/* Like Icon in the row */}
                                 <div className='w-8 flex items-center justify-center'>

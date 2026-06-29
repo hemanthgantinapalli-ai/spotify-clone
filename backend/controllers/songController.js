@@ -4,7 +4,22 @@ import songModel from '../models/songModel.js';
 // Add a new song
 const addSong = async (req, res) => {
     try {
-        const { name, desc, album } = req.body;
+        const { name, desc } = req.body;
+        let albums = [];
+
+        if (req.body.albums) {
+            try {
+                albums = JSON.parse(req.body.albums);
+            } catch {
+                albums = Array.isArray(req.body.albums) ? req.body.albums : [req.body.albums];
+            }
+        }
+
+        if (!Array.isArray(albums)) {
+            albums = [albums];
+        }
+
+        albums = albums.filter(Boolean);
 
         // Check if files exist
         if (!req.files || !req.files.audioFile || !req.files.imageFile) {
@@ -25,7 +40,7 @@ const addSong = async (req, res) => {
         const songData = new songModel({
             name,
             desc,
-            album,
+            albums,
             file: audioUpload.secure_url,
             image: imageUpload.secure_url,
             duration: `${durationMinutes}:${durationSeconds}`

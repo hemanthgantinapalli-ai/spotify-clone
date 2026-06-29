@@ -11,7 +11,7 @@ const AddSong = () => {
     const [imageFile, setImageFile] = useState(null);
     const [name, setName] = useState("");
     const [desc, setDesc] = useState("");
-    const [album, setAlbum] = useState("none");
+    const [selectedAlbums, setSelectedAlbums] = useState([]);
     const [loading, setLoading] = useState(false);
     const [albumList, setAlbumList] = useState([]);
     const [successMsg, setSuccessMsg] = useState("");
@@ -41,7 +41,7 @@ const AddSong = () => {
             const formData = new FormData();
             formData.append('name', name);
             formData.append('desc', desc);
-            formData.append('album', album);
+            formData.append('albums', JSON.stringify(selectedAlbums));
             formData.append('audioFile', songFile);
             formData.append('imageFile', imageFile);
 
@@ -57,7 +57,7 @@ const AddSong = () => {
                 setSuccessMsg("✅ Song Added Successfully! 🎧");
                 setName("");
                 setDesc("");
-                setAlbum("none");
+                setSelectedAlbums([]);
                 setSongFile(null);
                 setImageFile(null);
                 
@@ -125,13 +125,30 @@ const AddSong = () => {
                     </div>
 
                     <div className='flex flex-col gap-1'>
-                        <p className='font-semibold'>Assign to Album</p>
-                        <select onChange={(e) => setAlbum(e.target.value)} value={album} className='bg-spotifyDarkGray border border-spotifyDarkGray p-2.5 rounded text-white outline-none cursor-pointer'>
-                            <option value="none">None (Single Track)</option>
-                            {albumList.map((item) => (
-                                <option key={item._id} value={item.name}>{item.name}</option>
-                            ))}
-                        </select>
+                        <p className='font-semibold'>Assign to Albums</p>
+                        <div className='flex flex-wrap gap-2 rounded border border-spotifyDarkGray p-2 bg-spotifyDarkGray/60'>
+                            {albumList.length === 0 ? (
+                                <span className='text-xs text-spotifyGray'>No albums yet. Create one first.</span>
+                            ) : albumList.map((item) => {
+                                const checked = selectedAlbums.includes(item.name);
+                                return (
+                                    <label key={item._id} className='flex items-center gap-2 text-sm text-white cursor-pointer rounded px-2 py-1 hover:bg-zinc-700'>
+                                        <input
+                                            type='checkbox'
+                                            checked={checked}
+                                            onChange={() => {
+                                                setSelectedAlbums((prev) =>
+                                                    prev.includes(item.name)
+                                                        ? prev.filter((name) => name !== item.name)
+                                                        : [...prev, item.name]
+                                                );
+                                            }}
+                                        />
+                                        <span>{item.name}</span>
+                                    </label>
+                                );
+                            })}
+                        </div>
                     </div>
 
                     <button type='submit' className='text-black font-bold bg-spotifyGreen py-2.5 rounded-full mt-4 hover:scale-102 transition-all cursor-pointer'>

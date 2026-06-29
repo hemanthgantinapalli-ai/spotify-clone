@@ -49,6 +49,20 @@ const Display = () => {
     // Find actual song objects that are liked
     const likedSongsList = songsData.filter(song => likedSongs.includes(song._id));
 
+    const getSongAlbumLabel = (song) => {
+        if (Array.isArray(song.albums)) {
+            return song.albums.join(', ');
+        }
+        return song.album || '';
+    };
+
+    const doesSongMatchQuery = (song, query) => {
+        const normalizedQuery = query.toLowerCase();
+        return song.name.toLowerCase().includes(normalizedQuery)
+            || song.desc.toLowerCase().includes(normalizedQuery)
+            || getSongAlbumLabel(song).toLowerCase().includes(normalizedQuery);
+    };
+
     return (
         <div ref={displayRef} className='w-full px-3 sm:px-6 pt-4 sm:pt-5 pb-20 sm:pb-24 text-white min-h-[calc(100vh-140px)] animate-fade-in'>
             <Routes>
@@ -305,7 +319,7 @@ const Display = () => {
                                                     </div>
                                                 </div>
 
-                                                <span className='text-spotifyGray truncate'>{song.album}</span>
+                                                <span className='text-spotifyGray truncate'>{getSongAlbumLabel(song)}</span>
                                                 
                                                 <div className='flex justify-center'>
                                                     <button 
@@ -380,7 +394,7 @@ const Display = () => {
                                                     </div>
                                                 </div>
 
-                                                <span className='text-spotifyGray truncate'>{song.album}</span>
+                                                <span className='text-spotifyGray truncate'>{getSongAlbumLabel(song)}</span>
                                                 
                                                 <div className='flex justify-center'>
                                                     <button 
