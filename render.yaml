@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: spotify-clone-backend
+    env: node
+    plan: free
+    root: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: ALLOWED_ORIGINS
+        value: "https://spotify-clone-frontend.onrender.com,https://spotify-clone-2vi373h6h-hemanth-01.vercel.app"
+
+  - type: static_site
+    name: spotify-clone-frontend
+    env: static
+    plan: free
+    root: frontend
+    buildCommand: npm install && npm run build
+    publishPath: dist
+    envVars:
+      - key: VITE_BACKEND_URL
+        value: "https://spotify-clone-backend.onrender.com"

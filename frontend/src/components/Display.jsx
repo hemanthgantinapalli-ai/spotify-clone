@@ -227,7 +227,7 @@ const Display = () => {
                                     ].map((cat, idx) => (
                                         <div 
                                             key={idx} 
-                                            className={`h-36 rounded-xl bg-gradient-to-br ${cat.color} p-4 relative overflow-hidden cursor-pointer hover:scale-103 transition-transform duration-300 shadow-md group`}
+                                            className={`h-36 rounded-xl bg-linear-to-br ${cat.color} p-4 relative overflow-hidden cursor-pointer hover:scale-103 transition-transform duration-300 shadow-md group`}
                                         >
                                             <span className='font-bold text-lg text-white drop-shadow-md'>{cat.title}</span>
                                             <div className='absolute -right-4 -bottom-4 w-20 h-20 bg-white/10 rounded-full rotate-12 group-hover:scale-110 transition-transform duration-500'></div>
