@@ -22,18 +22,29 @@ app.use(express.json());
 
 // CORS Configuration — allow your Vercel/frontend deployments
 const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map((origin) => origin.trim())
+  ? process.env.ALLOWED_ORIGINS.split(',').map((origin) => origin.trim()).filter(Boolean)
   : [
       'https://spotify-clone-gray-iota.vercel.app',
       'https://spotify-clone-2vi373h6h-hemanth-01.vercel.app',
+      'https://spotify-clone-9j5wuwo1z-hemanth-01.vercel.app',
       'https://spotify-clone-2onf.onrender.com',
       'http://localhost:5173',
       'http://localhost:3000'
     ];
 
-app.use(cors({
+const isVercelOrigin = (origin) => origin && origin.endsWith('.vercel.app');
+const isRenderOrigin = (origin) => origin && origin.endsWith('.onrender.com');
+
+const corsOptions = {
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin) {
+      return callback(null, true);
+    }
+    if (
+      allowedOrigins.includes(origin) ||
+      isVercelOrigin(origin) ||
+      isRenderOrigin(origin)
+    ) {
       return callback(null, true);
     }
     return callback(new Error(`Origin ${origin} not allowed by CORS`));
@@ -41,7 +52,10 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
-}));
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // Allow Chrome Private Network Access (PNA) preflight checks
 app.use((req, res, next) => {
